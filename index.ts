@@ -115,10 +115,10 @@ bot.action("quiz", async (ctx) => {
 
   const quiz = quizes[(Math.random() * quizes.length) | 0]!;
 
-  const answers = [
+  const answers = shuffle([
     ...quiz.correct.map((ans) => Markup.button.callback(ans, "correct")),
     ...quiz.wrong.map((ans) => Markup.button.callback(ans, "wrong")),
-  ];
+  ]);
 
   await ctx.reply(quiz.question, Markup.inlineKeyboard([answers]));
 });
