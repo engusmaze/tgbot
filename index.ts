@@ -104,8 +104,17 @@ bot.action("clicked", async (ctx) => {
   if (userData.clicks == 0)
     await ctx.reply(`Привіт, давай дружить ${userName}!`);
 
-  let messages = ["message1", "message2"];
-  await ctx.reply(messages[(Math.random() * messages.length) | 0]!);
+  let messages = [
+    "Привіт! Бажаю тобі гарного дня та ще кращого настрою.",
+    "Що робить ІТ-шник, коли загубив ключі — Вирішує проблему через “Ctrl + Alt + Del”?",
+    "Серце восьминога має три камери. І що цікаво: коли він пливе — одна з них зупиняється!",
+    "Навіть найменший крок уперед наближає тебе до цілі. Не зупиняйся.",
+    "Якби ти міг провести один день у будь-якій епосі — яку б ти обрав?",
+    "Нехай сьогодні тобі усміхнеться удача!",
+    "Google знає все, але твоя бабуся все одно краще лікує від застуди",
+    "Талант — це дар. Але щоденна праця робить з нього мистецтво",
+  ];
+  await ctx.reply(selectRandom(messages));
 
   await ctx.reply(
     `Ви натиснули кнопку ${userData.clicks} разів! / You clicked the button ${userData.clicks} times!`,
@@ -129,10 +138,10 @@ bot.action("reset", async (ctx) => {
 bot.action("guess", async (ctx) => {
   await ctx.answerCbQuery();
   const answers = [
-    Markup.button.callback(`${Math.random() * 10}`, "wrong"),
-    Markup.button.callback(`${Math.random() * 10}`, "wrong"),
-    Markup.button.callback(`${Math.random() * 10}`, "wrong"),
-    Markup.button.callback(`${Math.random() * 10}`, "wrong"),
+    Markup.button.callback(`${Math.floor(Math.random() * 10)}`, "wrong"),
+    Markup.button.callback(`${Math.floor(Math.random() * 10)}`, "wrong"),
+    Markup.button.callback(`${Math.floor(Math.random() * 10)}`, "wrong"),
+    Markup.button.callback(`${Math.floor(Math.random() * 10)}`, "wrong"),
   ];
   selectRandom(answers).callback_data = "correct";
   await ctx.reply(`Guess the number`, Markup.inlineKeyboard([answers]));
@@ -218,12 +227,17 @@ bot.action("emotes", async (ctx) => {
     "Select emotion",
     Markup.inlineKeyboard([
       [
-        Markup.button.callback("😭", ""),
-        Markup.button.callback("🤨", ""),
-        Markup.button.callback("😂", ""),
+        Markup.button.callback("😭", "emote"),
+        Markup.button.callback("🤨", "emote"),
+        Markup.button.callback("😂", "emote"),
       ],
     ])
   );
+  await incrementScore(ctx);
+});
+
+bot.action("emote", async (ctx) => {
+  await ctx.answerCbQuery();
   await incrementScore(ctx);
 });
 
